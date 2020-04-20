@@ -1,9 +1,8 @@
 class App {
   constructor(options = {}) {
-    this.MAPBOX_NAV_API_URL = `https://api.mapbox.com/directions/v5/mapbox/walking`;
-    this.MAPBOX_API_KEY = `pk.eyJ1Ijoiam9leWtsZWUiLCJhIjoiMlRDV2lCSSJ9.ZmGAJU54Pa-z8KvwoVXVBw`;
-
     this.options = {
+      mapboxNavigationURL: options.mapboxNavigationURL || `https://api.mapbox.com/directions/v5/mapbox/walking`,
+      mapboxAccessToken: options.mapboxAccessToken || `pk.eyJ1Ijoiam9leWtsZWUiLCJhIjoiMlRDV2lCSSJ9.ZmGAJU54Pa-z8KvwoVXVBw`,
       container: options.container || "app",
       style: options.style || "mapbox://styles/mapbox/streets-v11",
       center: options.center || [-73.987308, 40.693378],
@@ -18,12 +17,12 @@ class App {
   }
 
   async init() {
-    mapboxgl.accessToken = this.MAPBOX_API_KEY;
+    mapboxgl.accessToken = this.options.mapboxAccessToken;
     this.createMap();
   }
 
   async generateRoutes() {
-    if (!this.map.isStyleLoaded) {
+    if (this.map === null && !this.map.isStyleLoaded) {
       console.log("not ready yet");
       await this.generateRoutes();
     }
@@ -55,7 +54,7 @@ class App {
     const destination = `${_destination[0]},${_destination[1]}`;
     const params = `${origin};${destination}?geometries=geojson`;
 
-    const directionsRequest = `${this.MAPBOX_NAV_API_URL}/${params}&access_token=${this.MAPBOX_API_KEY}`;
+    const directionsRequest = `${this.options.mapboxNavigationURL}/${params}&access_token=${this.options.mapboxAccessToken}`;
 
     const result = await fetch(directionsRequest);
     const data = await result.json();
