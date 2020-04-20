@@ -15,5 +15,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   app = new App(options);
   await app.init();
-  await app.generateRoutes();
+  await app.generateGridRoutes();
+  // await app.generateRadialRoutes();
 });

@@ -21,19 +21,28 @@ class App {
     this.createMap();
   }
 
-  async generateRoutes() {
+  async generateGridRoutes() {
     if (this.map === null && !this.map.isStyleLoaded) {
       console.log("not ready yet");
-      await this.generateRoutes();
+      await this.generateGridRoutes();
     }
-    
-    // get radial routes
-    // const coords = await this.getRadialCoordinates();
-    // const routes = await this.getAll(coords);
-    // this.render(routes);
 
     // get point grid routes
     const coords = this.getGridCoordinates();
+    const routes = await this.getAll(coords);
+    this.render(routes);
+
+    return routes;
+  }
+
+  async generateRadialRoutes() {
+    if (this.map === null && !this.map.isStyleLoaded) {
+      console.log("not ready yet");
+      await this.generateRadialRoutes();
+    }
+    
+    // get radial routes
+    const coords = await this.getRadialCoordinates();
     const routes = await this.getAll(coords);
     this.render(routes);
 
